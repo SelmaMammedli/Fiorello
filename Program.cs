@@ -1,7 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+using Fiorello;
+using Fiorello.DAL;
+using Microsoft.EntityFrameworkCore;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
+builder.Services.Register(config);
 
 var app = builder.Build();
 
