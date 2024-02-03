@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //loadmore
 
-    $('#loadmore').click(function () {
+    $("#loadmore").click(function () {
         $.ajax({
             method: "get",
             url: "/product/LoadMore",
