@@ -1,4 +1,23 @@
 $(document).ready(function () {
+    //loadmore
+
+    $('#loadmore').click(function () {
+        $.ajax({
+            method: "get",
+            url: "/product/LoadMore",
+            success: function (datas) {
+               $("#productList").append(datas)
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+
+
+
+
 
     // HEADER
 

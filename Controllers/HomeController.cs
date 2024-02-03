@@ -23,7 +23,7 @@ namespace Fiorello.Controllers
             homeVm.SliderContent = _appDbContext.SliderContent.FirstOrDefault();
             homeVm.Category=_appDbContext.Category.ToList();
             homeVm.Products = _appDbContext.Products
-             .Include(p=>p.Images)
+             .Include(p=>p.ProductImages)
              .ToList();
             return View(homeVm);
         }

@@ -10,7 +10,7 @@ namespace Fiorello.Models
         public string Name { get; set; }
         [Column(TypeName ="money")]
         public double Price { get; set; }
-        public List<ProductImage> Images { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
        
         public int CategoryId { get; set; }
         public Category Category { get; set; }
