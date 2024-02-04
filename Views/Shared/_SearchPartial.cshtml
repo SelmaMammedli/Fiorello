@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Product>
+
+
+@foreach(var products in Model)
+{
+    <li>
+        <a>
+          <img width="50px" height="50px" src="~/img/@products.ProductImages?.FirstOrDefault(p=>p.IsMain)?.ImageUrl">  @products.Name @products.Price
+        </a>
+    </li>
+
+}

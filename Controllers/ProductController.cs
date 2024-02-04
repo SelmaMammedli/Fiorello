@@ -45,5 +45,17 @@ namespace Fiorello.Controllers
             Skip+= 4;
             return PartialView("_LoadMorePartial",product);
         }
+        public IActionResult Search(string input)
+        {
+            var products = _appDbContext.Products
+               // .Where(p => p.Name.ToLower() == input.ToLower())
+               // .Where(p => p.Name.Equals(input,StringComparison.OrdinalIgnoreCase))
+                .Include(p=>p.ProductImages)
+                .Where(p => p.Name.Contains(input))
+                .OrderByDescending(p => p.Id)
+                .Take(5)
+                .ToList();
+            return PartialView("_SearchPartial",products);
+        }
     }
 }

@@ -13,6 +13,24 @@ $(document).ready(function () {
             }
         })
     })
+    //Search 
+    let input = $("#input-search");
+    $(document).on("keyup", "#input-search", function () {
+        let value = $(this).val().trim();
+        if (value.length > 0) {
+            $.ajax({
+                method: "get",
+                url: "/product/search?input="+value
+                success: function (datas) {
+                    $("searchList").append(datas);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            })
+        }
+
+    })
 
 
 
