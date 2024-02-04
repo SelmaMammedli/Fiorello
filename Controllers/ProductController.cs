@@ -57,5 +57,11 @@ namespace Fiorello.Controllers
                 .ToList();
             return PartialView("_SearchPartial",products);
         }
+        public IActionResult Detail(int? id)
+        {
+            var products = _appDbContext.Products;
+            return View(products);
+
+        }
     }
 }
