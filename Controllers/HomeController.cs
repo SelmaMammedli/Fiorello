@@ -18,6 +18,7 @@ namespace Fiorello.Controllers
 
         public IActionResult Index()
         {
+           // var images=_appDbContext.ProductImages.ToList();
             HomeVm homeVm = new HomeVm();
             homeVm.Sliders=_appDbContext.Sliders.ToList();
             homeVm.SliderContent = _appDbContext.SliderContent.FirstOrDefault();

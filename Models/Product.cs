@@ -14,5 +14,9 @@ namespace Fiorello.Models
        
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        [NotMapped]
+        public string? MainImageUrl => ProductImages.Count > 0 ? (ProductImages.Any(p => p.IsMain) ?
+            ProductImages.FirstOrDefault(p => p.IsMain).ImageUrl :
+            ProductImages.FirstOrDefault().ImageUrl) : null;
     }
 }
