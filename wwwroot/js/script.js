@@ -11,7 +11,8 @@ $(document).ready(function () {
             error: function (error) {
                 console.log(error)
             }
-        })
+         })
+       // alert("salam")
     })
     //Search 
     let input = $("#input-search");
@@ -20,7 +21,7 @@ $(document).ready(function () {
         if (value.length > 0) {
             $.ajax({
                 method: "get",
-                url: "/product/search?input="+value
+                url: "/product/search?input=" + value,
                 success: function (datas) {
                     $("searchList").append(datas);
                 },
