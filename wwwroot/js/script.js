@@ -24,6 +24,7 @@ $(document).ready(function () {
     //Search 
     let input = $("#input-search");
     $(document).on("keyup", "#input-search", function () {
+        $("#searchList li").slice(1).remove();
         let value = $(this).val().trim();
         if (value.length > 0) {
             $.ajax({
