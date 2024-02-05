@@ -2,13 +2,14 @@
 using Fiorello.ViewModels.ProductVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Fiorello.Controllers
 {
     public class ProductController : Controller
     {
         public readonly AppDbContext _appDbContext;
-        private static int Skip=4;
+       
 
         public ProductController(AppDbContext appDbContext)
         {
@@ -16,21 +17,24 @@ namespace Fiorello.Controllers
         }
         public IActionResult Index()
         {
-            var products = _appDbContext.Products
+           var query= _appDbContext.Products.AsQueryable();
+           ViewBag.ProductCount=query.Count();
+            var products = query
                 .Include(p=>p.Category)
                 .Include(p=>p.ProductImages)
                 .OrderBy(p => p.Id)
                 .Take(4)
                 .ToList();
-            Skip = 4;
+            
             return View(products);
         }
-        public IActionResult LoadMore()
+        public IActionResult LoadMore(int skip)
         {
+           
             var product = _appDbContext.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductImages)
-                .Skip(Skip)
+                .Skip(skip)
                 .Take(4)
                 //.Select(p => new ProductReturnVM
                 //{
@@ -42,13 +46,13 @@ namespace Fiorello.Controllers
 
                 //})
                 .ToList();
-            Skip+= 4;
+           
             return PartialView("_LoadMorePartial",product);
         }
         public IActionResult Search(string input)
         {
             var products = _appDbContext.Products
-               // .Where(p => p.Name.ToLower() == input.ToLower())
+               //.Where(p => p.Name.ToLower() == input.ToLower())
                // .Where(p => p.Name.Equals(input,StringComparison.OrdinalIgnoreCase))
                 .Include(p=>p.ProductImages)
                 .Where(p => p.Name.Contains(input))

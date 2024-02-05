@@ -1,12 +1,19 @@
 $(document).ready(function () {
     //loadmore
-
+    let skip = 4;
+    let productsCount = $("#countloadmore").val();
     $("#loadmore").click(function () {
         $.ajax({
             method: "get",
-            url: "/product/LoadMore",
+            url: "/product/LoadMore?skip=" + skip,
             success: function (datas) {
-               $("#productList").append(datas)
+                $("#productList").append(datas);
+                skip += 4;
+                if (skip >= productsCount) {
+
+                    $("#loadmore").remove();
+                   
+                }
             },
             error: function (error) {
                 console.log(error)
@@ -23,10 +30,10 @@ $(document).ready(function () {
                 method: "get",
                 url: "/product/search?input=" + value,
                 success: function (datas) {
-                    $("searchList").append(datas);
+                    $("#searchList").append(datas)
                 },
                 error: function (error) {
-                    console.log(error);
+                    console.log(error)
                 }
             })
         }
