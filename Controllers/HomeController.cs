@@ -28,7 +28,22 @@ namespace Fiorello.Controllers
              .ToList();
             return View(homeVm);
         }
+        public IActionResult Detail(int? id)
+        {
+            var products = _appDbContext.Products
+                .Include(p => p.ProductImages)
+                .Include(p => p.Category)
+                .ToList();
+            if (id == null) return BadRequest();
+            if (products.Exists(p => p.Id == id))
+            {
+                return View(products.Find(p => p.Id == id));
+            }
 
-       
+            return BadRequest();
+
+        }
+
+
     }
 }
