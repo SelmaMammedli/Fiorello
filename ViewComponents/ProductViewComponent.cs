@@ -1,4 +1,5 @@
 ﻿using Fiorello.DAL;
+using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,28 @@ namespace Fiorello.ViewComponents
             _context = context;
             
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(int take)
         {
-            var products = _context.Products
-             .Include(p => p.Category)
-             .Include(p => p.ProductImages)
-             .ToList();
+            List<Product> products;
+
+            if (take == 0)
+            {
+                products = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductImages)
+            .ToList();
+
+            }
+            else
+            {
+                products = _context.Products
+            .Include(p => p.Category)
+            .Include(p => p.ProductImages)
+            .Take(take)
+            .ToList();
+            }
+
+            
             return View(await Task.FromResult(products));
 
         }
