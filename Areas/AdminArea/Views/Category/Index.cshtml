@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<Category>
 <div class="container"> 
     <div class="row">
-        <div class="col-lg-6 grid-margin stretch-card">
+        <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Category Table</h4>
                     <p class="card-description">
-                        <a href="" class="btn btn-behance">Create Category</a>
+                        <a href="" class="btn btn-outline-success">Create Category</a>
                     </p>
                     <div class="table-responsive">
                         <table class="table">
@@ -14,6 +14,7 @@
                                 <tr>
                                     <th>Category</th>
                                     <th>Description</th>
+                                    <th>Settings</th>
                                     
                                 </tr>
                             </thead>
@@ -23,6 +24,11 @@
                                     <tr>
                                         <td>@category.Name</td>
                                         <td>@category.ShortDesc</td>
+                                        <td>
+                                            <a href="" class="btn btn-outline-info"><i class="mdi mdi-auto-fix"></i></a>
+                                            <a href="" class="btn btn-outline-secondary"><i class="mdi mdi-close"></i></a>
+                                            <a href="" class="btn btn-outline-behance"><i class="mdi mdi-brightness-5"></i></a>
+                                        </td>
                                      
                                     </tr>
                                 }
