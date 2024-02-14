@@ -1,4 +1,5 @@
 ﻿using Fiorello.DAL;
+using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiorello.Areas.AdminArea.Controllers
@@ -16,5 +17,21 @@ namespace Fiorello.Areas.AdminArea.Controllers
         {
             return View(_context.Category.ToList());
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(string name,string desc)
+        {
+            Category category = new();
+            category.Name = name;
+            category.Description = desc;
+            _context.Category.Add(category);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
