@@ -26,9 +26,9 @@
                                         <td>@category.Name</td>
                                         <td>@category.ShortDesc</td>
                                         <td>
-                                            <a href="" class="btn btn-outline-info"><i class="mdi mdi-auto-fix"></i></a>
-                                            <a href="" class="btn btn-outline-secondary"><i class="mdi mdi-close"></i></a>
-                                            <a href="" class="btn btn-outline-behance"><i class="mdi mdi-brightness-5"></i></a>
+                                            <a asp-action="update" asp-route-id="@category.Id" class="btn btn-outline-info"><i class="mdi mdi-auto-fix"></i></a>
+                                            <a asp-action="delete" asp-route-id="@category.Id" class="btn btn-outline-secondary"><i class="mdi mdi-close"></i></a>
+                                            <a asp-action="detail" asp-route-id="@category.Id" class="btn btn-outline-behance"><i class="mdi mdi-brightness-5"></i></a>
                                         </td>
                                      
                                     </tr>

@@ -31,6 +31,16 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null) return NotFound();
+            var existCategory=_context.Category.FirstOrDefault(s=>s.Id==id);
+            if(existCategory is null) return NotFound();
+            _context.Category.Remove(existCategory);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
 
     }
