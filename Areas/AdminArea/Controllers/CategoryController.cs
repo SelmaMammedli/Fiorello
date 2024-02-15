@@ -41,6 +41,19 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult Detail(int? id)
+        {
+            var category = _context.Category
+                .ToList();
+            if (id == null) return BadRequest();
+            if (category.Exists(p => p.Id == id))
+            {
+                return View(category.Find(p => p.Id == id));
+            }
+
+            return BadRequest();
+
+        }
 
 
     }
