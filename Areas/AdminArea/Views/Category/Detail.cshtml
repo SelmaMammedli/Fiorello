@@ -1,15 +1,21 @@
 ﻿@model Category
 <hr />
-<div class="container justify-content-center">
+<div class="container ">
     <div class="raw">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+            Category Name: <b style="color red">@Model.Name</b><hr />
+            Category Description: <i>@Model.Description</i><hr />
+
+            <p class="card-description">
+                <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
+            </p>
+            </div>
+
+        </div>
        
 
-        Category Name: <b style="color red">@Model.Name</b><hr />
-        Category Description: <i>@Model.Description</i><hr />
-
-        <p class="card-description">
-            <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
-        </p>
+       
 
       
 

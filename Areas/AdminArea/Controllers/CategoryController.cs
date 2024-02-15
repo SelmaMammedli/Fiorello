@@ -1,4 +1,6 @@
-﻿using Fiorello.DAL;
+﻿using Fiorello.Areas.ViewModels;
+using Fiorello.Areas.ViewModels.Category;
+using Fiorello.DAL;
 using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +24,19 @@ namespace Fiorello.Areas.AdminArea.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(string name,string desc)
+        public IActionResult Create(CategoryCreateVM category)
         {
-            Category category = new();
-            category.Name = name;
-            category.Description = desc;
-            _context.Category.Add(category);
+            if (!ModelState.IsValid) return View();
+            if(_context.Category.Any(c=>c.Name.ToLower() == category.Name.ToLower()))
+            {
+                ModelState.AddModelError("Name", "Bu adda kateqorya movcuddur");
+                return View();
+
+            }
+            Category newCategory = new();
+            newCategory.Name = category.Name;
+            newCategory.Description = category.Description;
+            _context.Category.Add(newCategory);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
