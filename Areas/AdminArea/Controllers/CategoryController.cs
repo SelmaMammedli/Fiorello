@@ -24,6 +24,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             return View();
         }
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create(CategoryCreateVM category)
         {
             if (!ModelState.IsValid) return View();
@@ -38,6 +39,41 @@ namespace Fiorello.Areas.AdminArea.Controllers
             newCategory.Description = category.Description;
             _context.Category.Add(newCategory);
             _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult Update(int? id)
+        {
+            if(id is null)return BadRequest();
+            var existedCategory = _context.Category.FirstOrDefault(c => c.Id == id);
+            if (existedCategory is null) return NotFound();
+            CategoryUpdateVM categoryUpdateVM = new ();
+            categoryUpdateVM.Id=existedCategory.Id;
+            categoryUpdateVM.Name= existedCategory.Name;
+            categoryUpdateVM.Description= existedCategory.Description;
+
+            return View(categoryUpdateVM);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Update(int? id,CategoryUpdateVM category)
+        {
+            if (id is null || id != category.Id) return BadRequest();
+            var existedCategory = _context.Category.FirstOrDefault(c => c.Id == id);
+            if (existedCategory is null) return NotFound();
+            if (_context.Category.Any(c => c.Name.ToLower() == category.Name.ToLower()))
+            {
+                ModelState.AddModelError("Name", "Bu adda kateqorya movcuddur");
+                return View();
+
+            }
+
+
+
+
+
+            existedCategory.Name = category.Name;
+            existedCategory.Description = category.Description;
+
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int? id)
