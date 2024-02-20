@@ -1,0 +1,14 @@
+﻿@model Category
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Name</h4>
+            <p>
+                @Model.Description
+           
+            </p>
+            <a class="btn btn-outline-dark" asp-action="index">Go Back</a>
+            <a class="btn btn-outline-danger" asp-action="DeleteCategory" asp-route-id="@Model.Id">Delete</a>
+        </div>
+    </div>
+</div>
