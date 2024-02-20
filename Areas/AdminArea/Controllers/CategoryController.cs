@@ -60,7 +60,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             if (id is null || id != category.Id) return BadRequest();
             var existedCategory = _context.Category.FirstOrDefault(c => c.Id == id);
             if (existedCategory is null) return NotFound();
-            if (_context.Category.Any(c => c.Name.ToLower() == category.Name.ToLower()))
+            if (_context.Category.Any(c => c.Name.ToLower() == category.Name && c.Id!=id))
             {
                 ModelState.AddModelError("Name", "Bu adda kateqorya movcuddur");
                 return View();
