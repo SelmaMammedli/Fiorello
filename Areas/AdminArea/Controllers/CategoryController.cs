@@ -67,12 +67,10 @@ namespace Fiorello.Areas.AdminArea.Controllers
 
             }
 
-
-
-
-
             existedCategory.Name = category.Name;
             existedCategory.Description = category.Description;
+            _context.SaveChanges();
+
 
             return RedirectToAction("Index");
         }
