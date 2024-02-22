@@ -70,7 +70,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             existedCategory.Name = category.Name;
             existedCategory.Description = category.Description;
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult Delete(int? id)
         {
