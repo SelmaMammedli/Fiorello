@@ -17,7 +17,8 @@ namespace Fiorello.Areas.AdminArea.Controllers
         }
         public IActionResult Index()
         {
-            return View(_context.Category.ToList());
+            var datas = _context.Category.ToList();
+            return View(datas);
         }
         public IActionResult Create()
         {
