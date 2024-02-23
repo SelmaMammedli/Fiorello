@@ -3,6 +3,7 @@ using Fiorello.Areas.ViewModels.Category;
 using Fiorello.DAL;
 using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello.Areas.AdminArea.Controllers
 {
@@ -17,7 +18,8 @@ namespace Fiorello.Areas.AdminArea.Controllers
         }
         public IActionResult Index()
         {
-            var datas = _context.Category.ToList();
+            var datas = _context.Category.AsNoTracking().ToList();
+            //var followedDatas = _context.ChangeTracker.Entries();
             return View(datas);
         }
         public IActionResult Create()
@@ -45,7 +47,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
         public IActionResult Update(int? id)
         {
             if(id is null)return BadRequest();
-            var existedCategory = _context.Category.FirstOrDefault(c => c.Id == id);
+            var existedCategory = _context.Category.AsNoTracking().FirstOrDefault(c => c.Id == id);
             if (existedCategory is null) return NotFound();
             CategoryUpdateVM categoryUpdateVM = new ();
             categoryUpdateVM.Id=existedCategory.Id;
@@ -76,7 +78,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
         public IActionResult Delete(int? id)
         {
             if (id == null) return NotFound();
-            var existCategory=_context.Category.FirstOrDefault(s=>s.Id==id);
+            var existCategory=_context.Category.AsNoTracking().FirstOrDefault(s=>s.Id==id);
             if(existCategory is null) return NotFound();
           
             return View(existCategory);
