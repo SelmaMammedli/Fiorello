@@ -1,0 +1,34 @@
+﻿@model SliderCreateVM
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Slider Create Form</h4>
+                    <p class="card-description">
+                        <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
+                    </p>
+                    <form enctype="multipart/form-data" class="forms-sample" method="post">
+                        <div class="form-group">
+                            <label for="exampleInputUsername1"></label>
+                            <input asp-for="Photo" value=""/>
+                            <span asp-validation-for="Photo" style="color:darkred"></span>
+                    
+                        </div>
+                        
+
+                        <button type="submit" class="btn btn-primary me-2">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts{
+
+    @*@await Html.PartialAsync("_ValidationPartial");*@
+    <partial name="_ValidationPartial"></partial>
+
+}
