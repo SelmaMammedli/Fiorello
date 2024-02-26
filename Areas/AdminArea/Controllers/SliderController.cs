@@ -61,5 +61,16 @@ namespace Fiorello.Areas.AdminArea.Controllers
             if(existSlider == null)return NotFound();
             return View(existSlider);
         }
+        public IActionResult DeleteSlider(int? id)
+        {
+            if (id is null) return NotFound();
+            var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
+            if (existSlider == null) return NotFound();
+            var currentDirectory = Directory.GetCurrentDirectory();
+            System.IO.File.Delete("");
+            _context.Sliders.Remove(existSlider);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
