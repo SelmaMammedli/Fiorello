@@ -54,5 +54,12 @@ namespace Fiorello.Areas.AdminArea.Controllers
 
             return RedirectToAction("Index");
         }
+        public IActionResult Delete(int? id)
+        {
+            if(id is null)return NotFound();
+            var existSlider=_context.Sliders.FirstOrDefault(s=>s.Id==id);
+            if(existSlider == null)return NotFound();
+            return View(existSlider);
+        }
     }
 }
