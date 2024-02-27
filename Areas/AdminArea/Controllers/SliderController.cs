@@ -67,7 +67,12 @@ namespace Fiorello.Areas.AdminArea.Controllers
             var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
             if (existSlider == null) return NotFound();
             var currentDirectory = Directory.GetCurrentDirectory();
-            System.IO.File.Delete("");
+            string fullPath = Path.Combine(currentDirectory,"wwwroot","img",existSlider.ImageUrl);
+            if(System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+            
             _context.Sliders.Remove(existSlider);
             _context.SaveChanges();
             return RedirectToAction("Index");
