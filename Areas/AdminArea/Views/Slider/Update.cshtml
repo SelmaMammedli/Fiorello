@@ -1,0 +1,32 @@
+﻿@model SliderUpdateVM
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <img width="400" height="200" src="~/img/@Model.ImageUrl" alt=""/>
+                <div class="card-body">
+                    <h4 class="card-title">Slider Update Form</h4>
+                   
+                    <form enctype="multipart/form-data" class="forms-sample" method="post">
+                        <div class="form-group">
+                            <label for="exampleInputUsername1"></label>
+                            <input asp-for="Photo" value="" />
+                            <span asp-validation-for="Photo" style="color:darkred"></span>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-outline-primary me-2">Submit</button>
+
+
+               
+                    <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
+              
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

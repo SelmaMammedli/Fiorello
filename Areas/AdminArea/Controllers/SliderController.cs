@@ -55,6 +55,41 @@ namespace Fiorello.Areas.AdminArea.Controllers
 
             return RedirectToAction("Index");
         }
+        public IActionResult Update(int?id)
+        {
+            if (id is null) return NotFound();
+            var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
+            if (existSlider == null) return NotFound();
+            var sliderUpdateVM=new SliderUpdateVM{ ImageUrl=existSlider.ImageUrl};
+            return View(sliderUpdateVM);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Update(int?id,SliderUpdateVM updateVM)
+        {
+            if (id is null) return NotFound();
+            var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
+            if (existSlider == null) return NotFound();
+            var photo=updateVM.Photo;
+            updateVM.ImageUrl=existSlider.ImageUrl;
+            if(photo is null || photo.Length == 0) return RedirectToAction("Index");
+            if (!photo.CheckFile())
+            {
+                ModelState.AddModelError("Photo", "Please upload right file");
+                return View(updateVM);
+            }
+            if (photo.CheckSize(500))
+            {
+                ModelState.AddModelError("Photo", "Please upload right file");
+                return View(updateVM);
+            }
+            string fileName = photo.SaveFile("img");
+            DeleteFileHelper.DeleteFile("img",existSlider.ImageUrl);
+            existSlider.ImageUrl= fileName;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
         public IActionResult Delete(int? id)
         {
             if(id is null)return NotFound();
@@ -72,6 +107,14 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context.Sliders.Remove(existSlider);
             _context.SaveChanges();
             return RedirectToAction("Index");
+        }
+        public ActionResult Detail(int? id)
+        {
+            if (id is null) return NotFound();
+            var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
+            if (existSlider == null) return NotFound();
+            return View(existSlider);
+
         }
     }
 }
