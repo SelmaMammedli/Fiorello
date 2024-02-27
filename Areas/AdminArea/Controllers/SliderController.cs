@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Fiorello.Areas.ViewModels.Slider;
 using Fiorello.Models;
 using Fiorello.Extensions;
+using Fiorello.Helper;
 
 namespace Fiorello.Areas.AdminArea.Controllers
 {
@@ -66,12 +67,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             if (id is null) return NotFound();
             var existSlider = _context.Sliders.FirstOrDefault(s => s.Id == id);
             if (existSlider == null) return NotFound();
-            var currentDirectory = Directory.GetCurrentDirectory();
-            string fullPath = Path.Combine(currentDirectory,"wwwroot","img",existSlider.ImageUrl);
-            if(System.IO.File.Exists(fullPath))
-            {
-                System.IO.File.Delete(fullPath);
-            }
+            DeleteFileHelper.DeleteFile("img",existSlider.ImageUrl);
             
             _context.Sliders.Remove(existSlider);
             _context.SaveChanges();
