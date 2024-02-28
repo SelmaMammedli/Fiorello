@@ -4,7 +4,7 @@
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Category Table</h4>
+                    <h4 class="card-title">Product Table</h4>
                     <p class="card-description">
                         <a asp-controller="product" asp-action="create" class="btn btn-outline-success">Create Product</a>
                     </p>
@@ -25,9 +25,12 @@
                                 @foreach (var product in Model)
                                 {
                                     <tr>
+                                        <td>
+                                            <img width="150" height="150" src="~/img/@product.MainImageUrl" alt=""/>
+                                        </td>
                                         <td>@product.Name</td>
-                                        <td>@product.Name</td>
-                                        <td>@product.Name</td>
+                                        <td>@product.Price</td>
+                                        <td>@product.Category.Name</td>
                                         
                                         <td>
                                             <a asp-action="update" asp-route-id="@product.Id" class="btn btn-outline-info"><i class="mdi mdi-auto-fix"></i></a>

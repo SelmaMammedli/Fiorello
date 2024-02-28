@@ -1,0 +1,46 @@
+﻿@model ProductCreateVM
+@{
+    var categoriees =(List<Category>) ViewBag.Category;
+}
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Product Create form</h4>
+           
+            <form class="forms-sample" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input  asp-for="Name" class="form-control" id="exampleInputUsername1" placeholder="Name">
+                    <span asp-validation-for="Name" style="color:darkred"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price">Price</label>
+                    <input  asp-for="Price" class="form-control" id="exampleInputUsername1" placeholder="Price">
+                    <span asp-validation-for="Price" style="color:darkred"></span>
+                </div>
+                <select asp-for="CategoryId" class="form-select" aria-label="Default select example">
+                    @foreach (var product in categoriees)
+                    {
+                       <option value="@product.Id">@product.Name</option>
+                        
+                    }
+                 
+                </select>
+                <div class="form-group">
+                    <label asp-for="Photos">Photos</label>
+                    <input  asp-for="Photos" class="form-control" id="exampleInputUsername1" placeholder="Photos">
+                    <span asp-validation-for="Photos" style="color:darkred"></span>
+                </div>
+               
+                <button type="submit" class="btn btn-outline-primary me-2">Create</button>
+                <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    @*@await Html.PartialAsync("_ValidationPartial");*@
+        <partial name="_ValidationPartial"></partial>
+
+}

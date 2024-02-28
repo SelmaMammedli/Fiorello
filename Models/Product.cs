@@ -18,5 +18,9 @@ namespace Fiorello.Models
         public string? MainImageUrl => ProductImages.Count > 0 ? (ProductImages.Any(p => p.IsMain) ?
             ProductImages.FirstOrDefault(p => p.IsMain).ImageUrl :
             ProductImages.FirstOrDefault().ImageUrl) : null;
+        public Product()
+        {
+            ProductImages = new(); 
+        }
     }
 }
