@@ -1,6 +1,7 @@
 ﻿using Fiorello.Areas.ViewModels.Product;
 using Fiorello.DAL;
 using Fiorello.Extensions;
+using Fiorello.Helper;
 using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -75,6 +76,35 @@ namespace Fiorello.Areas.AdminArea.Controllers
 
             _context.Products.Add(newProduct);
             _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult Delete(int? id)
+        {
+            if(id== null)return NotFound();
+            var product = _context.Products
+                .Include(p => p.Category)
+                .Include(p=>p.ProductImages)
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            return View(product);
+        }
+        public IActionResult DeleteProduct(int? id)
+        {
+            if (id == null) return NotFound();
+            var product = _context.Products
+                .Include(p => p.ProductImages)
+                .FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+            foreach (var image in product.ProductImages)
+            {
+                DeleteFileHelper.DeleteFile("img", image.ImageUrl);
+            }
+
+
+            
             return RedirectToAction("Index");
         }
     }
