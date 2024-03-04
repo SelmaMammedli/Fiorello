@@ -4,6 +4,7 @@ using Fiorello.Extensions;
 using Fiorello.Helper;
 using Fiorello.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello.Areas.AdminArea.Controllers
@@ -78,6 +79,25 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult Update(int? id)
+        {
+            //ViewBag.Category = _context.Category.ToList();
+            ViewBag.Category = new SelectList(_context.Category.ToList(),"Id","Name");
+            if (id == null) return NotFound();
+            var product = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            ProductUpdateVM productUpdateVM = new ProductUpdateVM();
+            productUpdateVM.Name=product.Name;
+            productUpdateVM.Price = product.Price;
+            productUpdateVM.CategoryId= product.CategoryId;
+            productUpdateVM.ProductImages= product.ProductImages;
+            return View(productUpdateVM);
+
+        }
         public IActionResult Delete(int? id)
         {
             if(id== null)return NotFound();
@@ -102,10 +122,20 @@ namespace Fiorello.Areas.AdminArea.Controllers
             {
                 DeleteFileHelper.DeleteFile("img", image.ImageUrl);
             }
-
-
-            
+ 
             return RedirectToAction("Index");
+        }
+        public IActionResult Detail(int? id)
+        {
+            if (id == null) return NotFound();
+            var product = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            return View(product);
+
         }
     }
 }

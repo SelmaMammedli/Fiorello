@@ -1,0 +1,22 @@
+﻿@model Product
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p><b>Name:</b>  @Model.Name</p>
+            <p>
+                <b>Price:</b> @Model.Price
+
+            </p>
+            <p>
+                <b>Category:</b> @Model.Category.Name
+
+            </p>
+            @foreach (var image in Model.ProductImages)
+            {
+                <img width="200" height="200" src="~/img/@image.ImageUrl" />
+            }<hr />
+            <a class="btn btn-outline-dark" asp-action="index">Go Back</a>
+           
+        </div>
+    </div>
+</div>
