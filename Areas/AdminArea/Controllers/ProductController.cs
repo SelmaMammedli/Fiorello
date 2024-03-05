@@ -129,10 +129,14 @@ namespace Fiorello.Areas.AdminArea.Controllers
                     ProductImage productImage = new();
                     productImage.ImageUrl = photo.SaveFile("img");
                     productImage.ProductId = product.Id;
-                    if (photos[0] == photo)
+                    if (!product.ProductImages.Any(p=>p.IsMain))
                     {
-                        productImage.IsMain = true;
+                        if (photos[0] == photo)
+                        {
+                            productImage.IsMain = true;
+                        }
                     }
+                   
 
 
                     product.ProductImages.Add(productImage);
@@ -195,6 +199,22 @@ namespace Fiorello.Areas.AdminArea.Controllers
                 .FirstOrDefault(p => p.Id == id);
             if (product == null) return NotFound();
             return View(product);
+
+        }
+        public IActionResult SetMainImage(int? id)
+        {
+            if (id == null) return NotFound();
+            var image = _context.ProductImages.FirstOrDefault(p => p.Id == id);
+            if (image == null) return NotFound();
+            image.IsMain = true;
+            var existIsMain = _context.ProductImages.FirstOrDefault(p => p.IsMain && p.ProductId==image.ProductId);
+            if(existIsMain is not null)
+            {
+                existIsMain.IsMain = false;
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Detail", new { id = image.ProductId });
+
 
         }
     }

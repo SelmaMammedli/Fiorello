@@ -14,6 +14,8 @@
             @foreach (var image in Model.ProductImages)
             {
                 <img width="200" height="200" src="~/img/@image.ImageUrl" />
+                @(image.IsMain ? Html.Raw("<i>Esas Photodur</i>") : Html.Raw($"<a class='btn btn-outline-success' href='/adminarea/product/setmainimage/{image.Id}'>Set Main Photo</a><br />"))
+             @*   <a asp-action="setmain" asp-route-id="@image.Id" class="btn btn-outline-success">Set Main Photo</a>*@
             }<hr />
             <a class="btn btn-outline-dark" asp-action="index">Go Back</a>
            

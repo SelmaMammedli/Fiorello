@@ -9,8 +9,13 @@
             @foreach (var image in Model.ProductImages)
             {
                 <img width="200" height="200" src="~/img/@image.ImageUrl" />
+                @(image.IsMain ? Html.Raw("<i>Esas Photodur</i>") : Html.Raw($"<a class='btn btn-outline-danger' href='/adminarea/product/deleteimage/{image.Id}'>Delete</a><br />"))
+               
+                 @*   <a class="btn btn-outline-danger" asp-action="DeleteImage" asp-route-id="@image.Id">Delete</a><br />*@
+
+                
+
               
-                <a class="btn btn-outline-danger" asp-action="DeleteImage" asp-route-id="@image.Id">Delete</a>
             }<hr />
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 <div class="form-group">
