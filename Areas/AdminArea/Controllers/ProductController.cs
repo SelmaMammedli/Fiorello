@@ -98,6 +98,66 @@ namespace Fiorello.Areas.AdminArea.Controllers
             return View(productUpdateVM);
 
         }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Update(int?id,ProductUpdateVM productUpdateVM)
+        {
+            ViewBag.Category = new SelectList(_context.Category.ToList(), "Id", "Name");
+            if(id == null) return NotFound();
+            var product = _context.Products
+                .Include(p=>p.ProductImages)
+                .FirstOrDefault(p => p.Id == id);
+            if (product == null) return NotFound();
+            productUpdateVM.ProductImages = product.ProductImages;
+            if (!ModelState.IsValid) return View(productUpdateVM);
+            var photos=productUpdateVM.Photos;
+            if(photos!=null && photos.Length> 0)
+            {
+                foreach (var photo in photos)
+                {
+                   
+                    if (!photo.CheckFile())
+                    {
+                        ModelState.AddModelError("Photo", "Please upload right file");
+                        return View();
+                    }
+                    if (photo.CheckSize(500))
+                    {
+                        ModelState.AddModelError("Photo", "Please choose normal file");
+                        return View();
+                    }
+                    ProductImage productImage = new();
+                    productImage.ImageUrl = photo.SaveFile("img");
+                    productImage.ProductId = product.Id;
+                    if (photos[0] == photo)
+                    {
+                        productImage.IsMain = true;
+                    }
+
+
+                    product.ProductImages.Add(productImage);
+                }
+            }
+
+
+
+            product.Name = productUpdateVM.Name;
+            product.Price = productUpdateVM.Price;
+            product.CategoryId = productUpdateVM.CategoryId;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteImage(int? id)
+        {
+            if (id == null) return NotFound();
+            var image=_context.ProductImages.FirstOrDefault(p => p.Id == id);
+            if (image == null) return NotFound();
+            _context.ProductImages.Remove(image);
+            _context.SaveChanges();
+            return RedirectToAction("Update", new {id=image.ProductId});
+
+
+        }
         public IActionResult Delete(int? id)
         {
             if(id== null)return NotFound();

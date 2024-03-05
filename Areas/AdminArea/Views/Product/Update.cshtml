@@ -9,6 +9,8 @@
             @foreach (var image in Model.ProductImages)
             {
                 <img width="200" height="200" src="~/img/@image.ImageUrl" />
+              
+                <a class="btn btn-outline-danger" asp-action="DeleteImage" asp-route-id="@image.Id">Delete</a>
             }<hr />
             <form class="forms-sample" method="post" enctype="multipart/form-data">
                 <div class="form-group">
@@ -35,7 +37,7 @@
                     <span asp-validation-for="Photos" style="color:darkred"></span>
                 </div>
 
-                <button type="submit" class="btn btn-outline-primary me-2">Update</button>
+                <button type="submit" class="btn btn-outline-warning me-2">Update</button>
                 <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
             </form>
         </div>

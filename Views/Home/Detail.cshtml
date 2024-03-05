@@ -6,7 +6,13 @@
          Product Name: <b style="color red">@Model.Name</b><hr />
          Product Price: <i>@Model.Price</i><hr />
          Product Category: <i>@Model.Category.Name</i><hr />
-         Product Image: <img width="150px" height="150px" src="~/img/@Model.MainImageUrl" />
+         Product Image:@* <img width="150px" height="150px" src="~/img/@Model.MainImageUrl" />*@
+        @foreach (var image in Model.ProductImages)
+        {
+            <img width="200" height="200" src="~/img/@image.ImageUrl" />
+
+           
+        }<hr />
 
     </div>
 
