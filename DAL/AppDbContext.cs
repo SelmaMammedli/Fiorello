@@ -1,9 +1,10 @@
 ﻿using Fiorello.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello.DAL
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext:IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions options):base(options)
         {
@@ -21,6 +22,8 @@ namespace Fiorello.DAL
             modelBuilder.Entity<Bio>()
                 .HasIndex(u => u.Key)
                 .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
