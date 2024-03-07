@@ -41,5 +41,9 @@ namespace Fiorello.Controllers
             return RedirectToAction("Index","Home");
 
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
     }
 }
