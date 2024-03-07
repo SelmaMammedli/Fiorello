@@ -45,5 +45,22 @@ namespace Fiorello.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Login(LoginVM loginVM)
+        {
+            if (!ModelState.IsValid) return View();
+            var user = await _userManager.FindByEmailAsync(loginVM.UserNameOrEmail);
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(loginVM.UserNameOrEmail);
+                if (user == null)
+                {
+                    ModelState.AddModelError("","Email or UserName or Password invalid!");
+                    return View(loginVM);
+                }
+            }
+            return RedirectToAction("Index","Home");
+        }
     }
 }
