@@ -55,7 +55,7 @@ namespace Fiorello.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login(LoginVM loginVM,string ? ReturnUrl)
         {
             if (!ModelState.IsValid) return View();
             var user = await _userManager.FindByEmailAsync(loginVM.UserNameOrEmail);
@@ -69,10 +69,19 @@ namespace Fiorello.Controllers
                 }
             }
             SignInResult result=  await _signInManager.PasswordSignInAsync(user,loginVM.Password,loginVM.RememberMe,true);
+            if(result.IsLockedOut)
+            {
+                ModelState.AddModelError("", "Blocked!");
+                return View(loginVM);
+            }
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Email or UserName or Password invalid!");
                 return View(loginVM);
+            }
+            if (ReturnUrl is not null)
+            {
+                return Redirect(ReturnUrl);
             }
             return RedirectToAction("Index","Home");
         }

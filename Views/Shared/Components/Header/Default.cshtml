@@ -113,11 +113,10 @@
                             <li class="nav-item">
                                 @if(User.Identity.IsAuthenticated)
                                 {
-                                    <a>@User.Identity.Name</a>
+                                    @*<a>@User.Identity.Name</a>*@
+                                    <a>@ViewBag.UserFullName</a>
                                     <br />
                                     <a asp-controller="account" asp-action="logout">Logout</a>
-
-                              
                                 }
                                 else
                                 {
