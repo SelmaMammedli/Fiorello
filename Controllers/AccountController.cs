@@ -1,4 +1,5 @@
-﻿using Fiorello.Models;
+﻿using Fiorello.Enums;
+using Fiorello.Models;
 using Fiorello.ViewModels.UserVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,12 @@ namespace Fiorello.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-
+            _roleManager = roleManager;
         }
 
         public IActionResult Register()
@@ -41,6 +43,9 @@ namespace Fiorello.Controllers
                 return View(registerVM);
 
             }
+            //await _userManager.AddToRoleAsync(user,Roles.Member.ToString());
+            await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+            //await _userManager.AddToRoleAsync(user, Roles.SuperAdmin.ToString());
             return RedirectToAction("Index","Home");
 
         }
@@ -75,6 +80,27 @@ namespace Fiorello.Controllers
         {
             await  _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> CreateRole()
+        {
+            foreach (var role in Enum.GetValues(typeof(Roles)))
+            {
+                await _roleManager.CreateAsync(new() { Name = role.ToString() });
+            }
+            //if (!await _roleManager.RoleExistsAsync("Admin"))
+            //{
+            //    await _roleManager.CreateAsync(new() { Name = "Admin" });
+            //}
+            //if(!await _roleManager.RoleExistsAsync("Member"))
+            //{
+            //    await _roleManager.CreateAsync(new() { Name = "Member" });
+            //}
+            //if(!await _roleManager.RoleExistsAsync("SuperAdmin"))
+            //{
+            //    await _roleManager.CreateAsync(new() { Name = "SuperAdmin" });
+            //}
+
+            return Content("Roles added");
         }
     }
 }

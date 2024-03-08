@@ -2,12 +2,14 @@
 using Fiorello.Areas.ViewModels.Category;
 using Fiorello.DAL;
 using Fiorello.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fiorello.Areas.AdminArea.Controllers
 {
     [Area("AdminArea")]
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
@@ -16,6 +18,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context = context;
             
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var datas = _context.Category.AsNoTracking().ToList();
@@ -44,6 +47,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        //[Authorize(Roles ="Admin")]
         public IActionResult Update(int? id)
         {
             if(id is null)return BadRequest();
