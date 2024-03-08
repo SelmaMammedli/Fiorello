@@ -6,7 +6,10 @@
                 <div class="card-body">
                     <h4 class="card-title">User Table</h4>
                     <p class="card-description">
-                        <a asp-controller="user" asp-action="create" class="btn btn-outline-success">Create User</a>
+                        <a asp-controller="user" asp-action="create" class="btn btn-outline-success">Create User</a><br /><br />
+                        <form asp-action="index">
+                            <input name="search" type="text" value="" /><button>Search</button>
+                        </form>
                     </p>
                     <div class="table-responsive">
                         <table class="table">
