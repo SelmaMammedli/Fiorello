@@ -2,16 +2,19 @@
 using Fiorello.ViewModels.UserVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Fiorello.Controllers
 {
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        public AccountController(UserManager<AppUser> userManager)
+        private readonly SignInManager<AppUser> _signInManager;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
-            
+            _signInManager = signInManager;
+
         }
 
         public IActionResult Register()
@@ -59,6 +62,12 @@ namespace Fiorello.Controllers
                     ModelState.AddModelError("","Email or UserName or Password invalid!");
                     return View(loginVM);
                 }
+            }
+            SignInResult result=  await _signInManager.PasswordSignInAsync(user,loginVM.Password,loginVM.RememberMe,true);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Email or UserName or Password invalid!");
+                return View(loginVM);
             }
             return RedirectToAction("Index","Home");
         }
