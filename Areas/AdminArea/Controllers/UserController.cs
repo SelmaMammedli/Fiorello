@@ -25,12 +25,28 @@ namespace Fiorello.Areas.AdminArea.Controllers
                     
             if (search is null)
                 return View(_userManager.Users
+                    .Where(u=>u.IsActive)
                     .AsNoTracking()
                     .ToList());
             else
                 return View(_userManager.Users
                     .AsNoTracking()
-                    .Where(u=>u.UserName.ToLower().Contains(search.ToLower())).ToList());
+                    .Where(u=>u.UserName.ToLower().Contains(search.ToLower())&&u.IsActive).ToList());
+
+        }
+        public IActionResult DeletedUser(string search)
+        {
+
+
+            if (search is null)
+                return View(_userManager.Users
+                    .Where(u=>!u.IsActive)
+                    .AsNoTracking()
+                    .ToList());
+            else
+                return View(_userManager.Users
+                    .AsNoTracking()
+                    .Where(u => u.UserName.ToLower().Contains(search.ToLower())&&!u.IsActive).ToList());
 
         }
         public async Task<IActionResult> Detail(string id)
