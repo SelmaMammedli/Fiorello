@@ -18,6 +18,7 @@
                                     <th>User Name</th>
                                     <th>FullName</th>
                                     <th>Email</th>
+                                    <th>IsActive</th>
                                     <th>Settings</th>
                                  
                                 </tr>
@@ -31,9 +32,22 @@
                                         </td>
                                         <td>@user.FullName</td>
                                         <td>@user.Email</td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <span class="text-success">active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">blocked</span>
+                                            }
+
+                                           
+                                        </td>
                                         
 
                                         <td>
+                                            <a asp-action="IsActive" asp-route-id="@user.Id" class="btn btn-outline-warning"><i class="mdi mdi-account-convert"></i></a>
                                             <a asp-action="update" asp-route-id="@user.Id" class="btn btn-outline-info"><i class="mdi mdi-auto-fix"></i></a>
                                             <a asp-action="delete" asp-route-id="@user.Id" class="btn btn-outline-secondary"><i class="mdi mdi-close"></i></a>
                                             <a asp-action="detail" asp-route-id="@user.Id" class="btn btn-outline-behance"><i class="mdi mdi-brightness-5"></i></a>

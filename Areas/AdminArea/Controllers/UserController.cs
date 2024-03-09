@@ -1,4 +1,5 @@
-﻿using Fiorello.DAL;
+﻿using Fiorello.Areas.ViewModels.User;
+using Fiorello.DAL;
 using Fiorello.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,26 @@ namespace Fiorello.Areas.AdminArea.Controllers
                     .AsNoTracking()
                     .Where(u=>u.UserName.ToLower().Contains(search.ToLower())).ToList());
 
+        }
+        public async Task<IActionResult> Detail(string id)
+        {
+            if(id == null)return NotFound();
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)return NotFound();
+            var roles = await _userManager.GetRolesAsync(user);
+            UserDetailVM userDetailVM = new();
+            userDetailVM.User = user;
+            userDetailVM.UserRoles = roles;
+            return View(userDetailVM);
+        }
+        public async Task<IActionResult> IsActive(string id)
+        {
+            if (id == null) return NotFound();
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+            user.IsActive=!user.IsActive;
+            await _userManager.UpdateAsync(user);
+            return RedirectToAction("Index");
         }
     }
 }

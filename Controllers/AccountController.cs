@@ -68,6 +68,11 @@ namespace Fiorello.Controllers
                     return View(loginVM);
                 }
             }
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError("", "Your account is blocked!");
+                return View(loginVM);
+            }
             SignInResult result=  await _signInManager.PasswordSignInAsync(user,loginVM.Password,loginVM.RememberMe,true);
             if(result.IsLockedOut)
             {

@@ -1,0 +1,25 @@
+﻿@model UserDetailVM
+<hr />
+<div class="container ">
+    <div class="raw">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                User FullName: <b style="color red">@Model.User.FullName</b><hr />
+                User UserName: <i>@Model.User.UserName</i><hr />
+                 User Email: <i>@Model.User.Email</i><hr />
+                @foreach(var roles in Model.UserRoles)
+                {
+                    <p>User Roles:</p>
+                    <i>@roles</i>
+                }
+
+                <p class="card-description">
+                    <a class="btn btn-outline-dark" asp-action="index">Go Back  </a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
