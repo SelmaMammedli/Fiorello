@@ -22,31 +22,29 @@ namespace Fiorello.Areas.AdminArea.Controllers
         public IActionResult Index(string search)
         {
             
-                    
-            if (search is null)
-                return View(_userManager.Users
-                    .Where(u=>u.IsActive)
-                    .AsNoTracking()
-                    .ToList());
-            else
-                return View(_userManager.Users
-                    .AsNoTracking()
-                    .Where(u=>u.UserName.ToLower().Contains(search.ToLower())&&u.IsActive).ToList());
+             var users=search is null?_userManager.Users
+                .AsNoTracking()
+                .ToList():
+                _userManager.Users
+                .AsNoTracking()
+                .Where(u => u.UserName.ToLower().Contains(search.ToLower()) /*&& !u.IsActive*/)
+                .ToList();
+            return View(users);
 
         }
         public IActionResult DeletedUser(string search)
         {
 
 
-            if (search is null)
-                return View(_userManager.Users
-                    .Where(u=>!u.IsActive)
-                    .AsNoTracking()
-                    .ToList());
-            else
-                return View(_userManager.Users
-                    .AsNoTracking()
-                    .Where(u => u.UserName.ToLower().Contains(search.ToLower())&&!u.IsActive).ToList());
+            var users = search is null ? _userManager.Users
+                .Where(u=>!u.IsActive)
+               .AsNoTracking()
+               .ToList() :
+               _userManager.Users
+               .AsNoTracking()
+               .Where(u => u.UserName.ToLower().Contains(search.ToLower()) && !u.IsActive)
+               .ToList();
+            return View(users);
 
         }
         public async Task<IActionResult> Detail(string id)
