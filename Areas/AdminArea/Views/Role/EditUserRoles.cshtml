@@ -12,26 +12,23 @@
                     <p>User Roles:</p>
                        @foreach (var roles in Model.Roles)
                     {
-                        @foreach(var userRoles in Model.UserRoles)
+                        if (Model.UserRoles.Contains(roles.Name))
                         {
-                            if (roles.Name == userRoles)
-                            {
-                                <input type="checkbox" checked value="@roles.Name" />
+                            <input type="checkbox" checked value="@roles.Name" />
 
-                                @roles.Name
+                            @roles.Name
 
-                                <br />
-                            }
-                            else
-                            {
-                                <input type="checkbox" value="@roles.Name" />
-
-                                @roles.Name
-
-                                <br />
-                            }
+                            <br />
                         }
-                       
+                        else
+                        {
+                            <input type="checkbox"  value="@roles.Name" />
+
+                            @roles.Name
+
+                            <br />
+                        }
+
                    
                     }
                     <button type="submit">Change</button><br /><hr />
