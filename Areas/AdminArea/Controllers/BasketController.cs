@@ -10,12 +10,12 @@ namespace Fiorello.Areas.AdminArea.Controllers
         }
         public IActionResult SetData()
         {
-            HttpContext.Response.Cookies.Append("name","filankes",new CookieOptions { MaxAge=TimeSpan.FromMinutes(10)});
+            //HttpContext.Response.Cookies.Append("name","filankes",new CookieOptions { MaxAge=TimeSpan.FromMinutes(10)});
             return Content("Set olundu");
         }
         public IActionResult GetData()
         {
-            var data = Request.Cookies["name"];
+            //var data = Request.Cookies["name"];
             return Content(data); 
         }
     }
