@@ -47,5 +47,17 @@ namespace Fiorello.Areas.AdminArea.Controllers
             changeRoleVM.UserRoles= userRoles;
             return View(changeRoleVM);
         }
+        [HttpPost]
+        public async Task<IActionResult> EditUserRoles(string userId,List<string>newRoles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) return NotFound();
+            var userRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, userRoles);
+            await _userManager.AddToRolesAsync(user, newRoles);
+
+            return RedirectToAction("Index","User");
+        }
+
     }
 }

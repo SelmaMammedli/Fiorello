@@ -10,21 +10,21 @@
              
                 <form method="post">
                     <p>User Roles:</p>
-                       @foreach (var roles in Model.Roles)
+                       @foreach (var role in Model.Roles)
                     {
-                        if (Model.UserRoles.Contains(roles.Name))
+                        if (Model.UserRoles.Contains(role.Name))
                         {
-                            <input type="checkbox" checked value="@roles.Name" />
+                            <input name="newRoles" type="checkbox" checked value="@role.Name" />
 
-                            @roles.Name
+                            @role.Name
 
                             <br />
                         }
                         else
                         {
-                            <input type="checkbox"  value="@roles.Name" />
+                            <input name="newRoles" type="checkbox" value="@role.Name" />
 
-                            @roles.Name
+                            @role.Name
 
                             <br />
                         }
