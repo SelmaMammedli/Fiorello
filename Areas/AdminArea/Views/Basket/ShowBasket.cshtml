@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BasketProductVM>
+@{
+    double totalPrice = Model.Sum(p => p.Price * p.BasketCount);
+}
+<div class="container"> 
+    @if (Model.Count() != 0)
+    {
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">CategoryName</th>
+                        <th scope="col">BasketCount</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Setting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <th>
+                                <img src="~/img/@product.MainImageUrl" width="150" height="150" alt="" />
+                            </th>
+                            <td>@product.Name</td>
+                            <td>@product.Price</td>
+                            <td>@product.CategoryName</td>
+                            <td><a asp-action="increase" asp-route-id="@product.Id">+</a>@product.BasketCount<a asp-action="deccrease" asp-route-id="@product.Id">-</a></td>
+                            <td>@(product.Price * product.BasketCount)</td>
+                            <td><a asp-action="remove" asp-route-id="@product.Id">x</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            Total Price:@totalPrice
+        </div>
+    }
+    else
+    {
+        <p>empty list go to <a asp-controller="home" asp-action="index">Home Page</a></p>
+    }
+
+</div>
