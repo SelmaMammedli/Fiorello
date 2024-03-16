@@ -29,7 +29,7 @@
                             <td>@product.Name</td>
                             <td>@product.Price</td>
                             <td>@product.CategoryName</td>
-                            <td><a asp-action="increase" asp-route-id="@product.Id">+</a>@product.BasketCount<a asp-action="deccrease" asp-route-id="@product.Id">-</a></td>
+                            <td><a asp-action="increase" asp-route-id="@product.Id">+</a>@product.BasketCount<a asp-action="decrease" asp-route-id="@product.Id">-</a></td>
                             <td>@(product.Price * product.BasketCount)</td>
                             <td><a asp-action="remove" asp-route-id="@product.Id">x</a></td>
                         </tr>
