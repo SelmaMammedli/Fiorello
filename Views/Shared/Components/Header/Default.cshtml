@@ -1,4 +1,10 @@
-﻿@model Dictionary<string,string>
+﻿@using Fiorello.Services.Interfaces;
+@model Dictionary<string,string>
+@inject IBasketService _basketService; 
+@{
+    int basketCount= _basketService.BasketCount();
+    var products = _basketService.GetProducts();
+}
 <header>
     <div class="container">
         <div class="row">
@@ -141,10 +147,25 @@
                             </li>
                             <li class="nav-item my-auto shop-cart">
                                 <a  asp-controller="Basket" asp-action="ShowBasket"><i class="fas fa-shopping-bag"></i></a>
-                                <sup class="rounded-circle">@ViewBag.ProductsCount</sup>
+                                <sup class="rounded-circle">@basketCount</sup>
                                 <span>CART ($)</span>
                                 <ul class="list-unstyled py-3">
-                                    <li class="">No products in the cart.</li>
+                                    @if (products.Count == 0)
+                                    {
+                                        <li class="">No products in the cart.</li>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var product in products)
+                                        {
+                                            <li class="">
+                                                <img src="~/img/@product.MainImageUrl" height="50" width="50" alt="">
+                                                <span>@product.Name</span>
+                                            </li>
+
+                                        }
+                                    }
+                                   
                                 </ul>
                             </li>
                         </ul>

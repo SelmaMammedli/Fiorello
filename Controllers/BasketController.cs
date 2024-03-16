@@ -1,4 +1,5 @@
 ﻿using Fiorello.DAL;
+using Fiorello.Models;
 using Fiorello.ViewModels.BasketVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,12 +40,12 @@ namespace Fiorello.Controllers
                 BasketProductVM basketProductVM = new()
                 {
                     Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    CategoryName = product.Category.Name,
-                    MainImageUrl = product.ProductImages.Any(p => p.IsMain) ?
-                     product.ProductImages.FirstOrDefault(p => p.IsMain).ImageUrl :
-                     product.ProductImages.FirstOrDefault().ImageUrl,
+                    //Name = product.Name,
+                    //Price = product.Price,
+                    //CategoryName = product.Category.Name,
+                    //MainImageUrl = product.ProductImages.Any(p => p.IsMain) ?
+                    // product.ProductImages.FirstOrDefault(p => p.IsMain).ImageUrl :
+                    // product.ProductImages.FirstOrDefault().ImageUrl,
                     BasketCount = 1
                 };
                 list.Add(basketProductVM);
@@ -70,6 +71,23 @@ namespace Fiorello.Controllers
             else
             {
                 list = JsonConvert.DeserializeObject<List<BasketProductVM>>(stringData);
+                foreach (var basketProduct in list)
+                {
+                    var existedProduct = _context.Products
+                        .Include(p => p.ProductImages)
+                        .Include(p => p.Category)
+                        .FirstOrDefault(p => p.Id == basketProduct.Id);
+                    if(existedProduct is not null)
+                    {
+                        basketProduct.Name = existedProduct.Name;
+                        basketProduct.Price = existedProduct.Price;
+                        basketProduct.MainImageUrl = existedProduct.ProductImages.Any(p => p.IsMain) ?
+                      existedProduct.ProductImages.FirstOrDefault(p => p.IsMain).ImageUrl :
+                      existedProduct.ProductImages.FirstOrDefault().ImageUrl;
+                        basketProduct.CategoryName = existedProduct.Category.Name;
+
+                    }
+                }
             }
 
             return View(list);

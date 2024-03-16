@@ -1,12 +1,16 @@
 using Fiorello;
 using Fiorello.DAL;
 using Fiorello.Models;
+using Fiorello.Services.Implementations;
+using Fiorello.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 builder.Services.Register(config);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IBasketService,BasketService>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(identityOption =>
 {
     identityOption.Password.RequiredLength = 5;
