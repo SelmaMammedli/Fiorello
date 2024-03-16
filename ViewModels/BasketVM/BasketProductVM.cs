@@ -16,7 +16,7 @@ namespace Fiorello.ViewModels.BasketVM
        
         public string CategoryName { get; set; }
         
-        public string? MainImageUrl { get; set; }
+        public string MainImageUrl { get; set; }
         public int BasketCount { get; set; }
     }
 }

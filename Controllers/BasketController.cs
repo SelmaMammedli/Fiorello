@@ -2,11 +2,9 @@
 using Fiorello.ViewModels.BasketVM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Newtonsoft.Json;
 
-
-namespace Fiorello.Areas.AdminArea.Controllers
+namespace Fiorello.Controllers
 {
     public class BasketController : Controller
     {
@@ -14,15 +12,15 @@ namespace Fiorello.Areas.AdminArea.Controllers
         public BasketController(AppDbContext context)
         {
             _context = context;
-            
+
         }
 
-        public IActionResult AddBasket(int?id)
+        public IActionResult AddBasket(int? id)
         {
             if (id == null) return BadRequest();
-            var product=_context.Products
-                .Include(p=>p.Category)
-                .Include(p=>p.ProductImages)
+            var product = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductImages)
                 .FirstOrDefault(p => p.Id == id);
             if (product == null) return NotFound();
             List<BasketProductVM> list;
@@ -33,9 +31,9 @@ namespace Fiorello.Areas.AdminArea.Controllers
             }
             else
             {
-                list=JsonConvert.DeserializeObject<List<BasketProductVM>>(basket);
+                list = JsonConvert.DeserializeObject<List<BasketProductVM>>(basket);
             }
-            var existProductInBasket=list.Find(p => p.Id == id);
+            var existProductInBasket = list.Find(p => p.Id == id);
             if (existProductInBasket is null)
             {
                 BasketProductVM basketProductVM = new()
@@ -55,17 +53,17 @@ namespace Fiorello.Areas.AdminArea.Controllers
             {
                 existProductInBasket.BasketCount++;
             }
-            
-            var stringProduct=JsonConvert.SerializeObject(list);
+
+            var stringProduct = JsonConvert.SerializeObject(list);
             Response.Cookies.Append("basket", stringProduct);
-           
-            return RedirectToAction("Index","Home");
+
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult ShowBasket()
         {
             var stringData = Request.Cookies["basket"];
-            List<BasketProductVM> list ;
-            if(stringData is null)
+            List<BasketProductVM> list;
+            if (stringData is null)
             {
                 list = new();
             }
@@ -73,9 +71,8 @@ namespace Fiorello.Areas.AdminArea.Controllers
             {
                 list = JsonConvert.DeserializeObject<List<BasketProductVM>>(stringData);
             }
-         
-            return View(list); 
+
+            return View(list);
         }
-        
     }
 }

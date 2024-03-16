@@ -1,8 +1,9 @@
-﻿@model IEnumerable<BasketProductVM>
+﻿@using Fiorello.ViewModels.BasketVM;
+@model IEnumerable<BasketProductVM>
 @{
     double totalPrice = Model.Sum(p => p.Price * p.BasketCount);
 }
-<div class="container"> 
+<div class="container">
     @if (Model.Count() != 0)
     {
         <div class="row">
@@ -46,3 +47,4 @@
     }
 
 </div>
+
