@@ -798,3 +798,9 @@ footer p {
   opacity: 1 !important;
 }
 /*# sourceMappingURL=style.css.map */
+.bg-online{
+    background-color:forestgreen;
+}
+.bg-offline{
+    background-color:gray;
+}
