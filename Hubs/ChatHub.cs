@@ -14,7 +14,7 @@ namespace Fiorello.Hubs
         }
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message,DateTime.Now.ToString("MM/dd/yyyy"));
+            await Clients.All.SendAsync("ReceiveMessage", user, message,DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
         }
         public override Task OnConnectedAsync()
         {
@@ -23,6 +23,7 @@ namespace Fiorello.Hubs
                 var user=_userManager.FindByNameAsync(Context.User.Identity.Name).Result;
                 user.ConnectionId = Context.ConnectionId;
                 var result=_userManager.UpdateAsync(user).Result;
+                Clients.All.SendAsync("userconnect", user.Id);
             }
             return base.OnConnectedAsync();
         }
@@ -33,6 +34,7 @@ namespace Fiorello.Hubs
                 var user = _userManager.FindByNameAsync(Context.User.Identity.Name).Result;
                 user.ConnectionId = null;
                 var result = _userManager.UpdateAsync(user).Result;
+                Clients.All.SendAsync("userdisconnect", user.Id);
             }
             return base.OnDisconnectedAsync(exception);
         }

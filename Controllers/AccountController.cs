@@ -33,6 +33,7 @@ namespace Fiorello.Controllers
             user.FullName = registerVM.FullName;
             user.Email = registerVM.Email;
             user.UserName = registerVM.UserName;
+            user.IsActive = true;
             IdentityResult result= await _userManager.CreateAsync(user,registerVM.Password);
             if(!result.Succeeded)
             {

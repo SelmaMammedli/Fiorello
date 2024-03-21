@@ -30,8 +30,8 @@
             <ul class="list-group">
               @foreach(var user in ViewBag.Users)
               {
-                    <li class="list-group-item">
-                        <span class="bg-offline" style="display:inline-block;width:15px;height:15px;border-radius:50%;"></span>
+                    <li id="@user.Id" class="list-group-item">
+                        <span class="@(user.ConnectionId!=null?"bg-online":"bg-offline")" style="display:inline-block;width:15px;height:15px;border-radius:50%;"></span>
                         @user.UserName</li>
               }
             </ul>
@@ -57,6 +57,16 @@
            let li=document.createElement("li");
            li.innerText=user+" "+message+" "+time;
             document.getElementById("messagesList").append(li);
+        })
+        connection.on("userdisconnect",function(id){
+            let span=document.querySelector(`#${id} span`);
+            span.classList.add("bg-offline");
+            span.classList.remove("bg-online");
+        })
+        connection.on("userconnect", function (id) {
+            let span = document.querySelector(`#${id} span`);
+            span.classList.add("bg-online");
+            span.classList.remove("bg-offline");
         })
 
 
