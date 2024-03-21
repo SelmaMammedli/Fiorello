@@ -1,5 +1,6 @@
 using Fiorello;
 using Fiorello.DAL;
+using Fiorello.Hubs;
 using Fiorello.Models;
 using Fiorello.Services.Implementations;
 using Fiorello.Services.Interfaces;
@@ -11,6 +12,7 @@ var config = builder.Configuration;
 builder.Services.Register(config);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IBasketService,BasketService>();
+builder.Services.AddSignalR();
 builder.Services.AddIdentity<AppUser, IdentityRole>(identityOption =>
 {
     identityOption.Password.RequiredLength = 5;
@@ -33,6 +35,7 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
+app.MapHub<ChatHub>("/chat");//ChatHup yaratdigimiz classin adidir,/chat ise uzantisidi(/adminarea kimi)
 app.UseSession();
 
 // Configure the HTTP request pipeline.
