@@ -118,7 +118,7 @@ namespace Fiorello.Migrations
                     b.HasIndex("Key")
                         .IsUnique();
 
-                    b.ToTable("Bios");
+                    b.ToTable("Bios", (string)null);
                 });
 
             modelBuilder.Entity("Fiorello.Models.Category", b =>
@@ -139,64 +139,7 @@ namespace Fiorello.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("Fiorello.Models.Demo.Book", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Fiorello.Models.Demo.BookLibrary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LibraryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("LibraryId");
-
-                    b.ToTable("BookLibraries");
-                });
-
-            modelBuilder.Entity("Fiorello.Models.Demo.Library", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Libraries");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("Fiorello.Models.Product", b =>
@@ -222,7 +165,7 @@ namespace Fiorello.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Fiorello.Models.ProductImage", b =>
@@ -246,7 +189,7 @@ namespace Fiorello.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("Fiorello.Models.Slider", b =>
@@ -263,7 +206,7 @@ namespace Fiorello.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sliders");
+                    b.ToTable("Sliders", (string)null);
                 });
 
             modelBuilder.Entity("Fiorello.Models.SliderContent", b =>
@@ -288,7 +231,7 @@ namespace Fiorello.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SliderContent");
+                    b.ToTable("SliderContent", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -424,25 +367,6 @@ namespace Fiorello.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Fiorello.Models.Demo.BookLibrary", b =>
-                {
-                    b.HasOne("Fiorello.Models.Demo.Book", "Book")
-                        .WithMany("BookLibraries")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fiorello.Models.Demo.Library", "Library")
-                        .WithMany("BookLibraries")
-                        .HasForeignKey("LibraryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Library");
-                });
-
             modelBuilder.Entity("Fiorello.Models.Product", b =>
                 {
                     b.HasOne("Fiorello.Models.Category", "Category")
@@ -519,16 +443,6 @@ namespace Fiorello.Migrations
             modelBuilder.Entity("Fiorello.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Fiorello.Models.Demo.Book", b =>
-                {
-                    b.Navigation("BookLibraries");
-                });
-
-            modelBuilder.Entity("Fiorello.Models.Demo.Library", b =>
-                {
-                    b.Navigation("BookLibraries");
                 });
 
             modelBuilder.Entity("Fiorello.Models.Product", b =>
