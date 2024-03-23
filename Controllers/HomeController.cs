@@ -1,7 +1,10 @@
 ﻿using Fiorello.DAL;
+using Fiorello.Hubs;
 using Fiorello.Models;
 using Fiorello.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -10,10 +13,14 @@ namespace Fiorello.Controllers
     public class HomeController : Controller
     {
         public readonly AppDbContext _appDbContext;
+        private readonly IHubContext<ChatHub> _hubContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        public HomeController(AppDbContext appDbContext)
+        public HomeController(AppDbContext appDbContext, IHubContext<ChatHub> hubContext,UserManager<AppUser> userManager)
         {
             _appDbContext = appDbContext;
+            _hubContext = hubContext;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -42,6 +49,12 @@ namespace Fiorello.Controllers
 
             return BadRequest();
 
+        }
+        public async Task<IActionResult> ShowAlert(string userId)
+        {
+            var user=await _userManager.FindByIdAsync(userId);
+            await _hubContext.Clients.Client(user.ConnectionId).SendAsync("UserShowAlert", user.FullName);
+            return RedirectToAction("chat", "chatpractice");
         }
 
 
