@@ -52,7 +52,9 @@ namespace Fiorello.Controllers
         }
         public async Task<IActionResult> ShowAlert(string userId)
         {
+            
             var user=await _userManager.FindByIdAsync(userId);
+            if (user.ConnectionId is null) return NotFound();
             await _hubContext.Clients.Client(user.ConnectionId).SendAsync("UserShowAlert", user.FullName);
             return RedirectToAction("chat", "chatpractice");
         }
