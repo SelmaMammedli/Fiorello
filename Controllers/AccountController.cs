@@ -3,6 +3,8 @@ using Fiorello.Models;
 using Fiorello.ViewModels.UserVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Mail;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Fiorello.Controllers
@@ -47,8 +49,44 @@ namespace Fiorello.Controllers
             await _userManager.AddToRoleAsync(user,Roles.Member.ToString());
             //await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
             //await _userManager.AddToRoleAsync(user, Roles.SuperAdmin.ToString());
+
+
+            //email confirmation
+            var token=await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var link = Url.Action(nameof(VerifyEmail), "Account", new { token, email = user.Email },
+                Request.Scheme, Request.Host.ToString());
+
+            MailMessage mailMessage = new();
+            mailMessage.From=new MailAddress("7fvqmgj@code.edu.az","Verify Fiorello email");
+            mailMessage.To.Add(new MailAddress(user.Email));
+            mailMessage.Subject = "Verify Email";
+            mailMessage.IsBodyHtml = true;
+            string body = String.Empty;
+            using(StreamReader streamReader=new StreamReader("wwwroot/emailTemplate/verifyEmailTemplate.html"))
+            {
+                body= streamReader.ReadToEnd();
+            }
+            body=body.Replace("{{name}}", user.FullName);
+            body=body.Replace("{{link}}", link);
+            mailMessage.Body = body;
+           
+
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Host = "smtp.gmail.com";
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
+
+            smtpClient.Credentials = new NetworkCredential("7fvqmgj@code.edu.az", "vunl xkhb nqee iwtz");
+            smtpClient.Send(mailMessage);
+
             return RedirectToAction("Index","Home");
 
+        }
+        public async Task<IActionResult> VerifyEmail(string token,string email)
+        {
+            AppUser user=await _userManager.FindByEmailAsync(email);
+            await _userManager.ConfirmEmailAsync(user,token);
+            return RedirectToAction("Index", "Home");
         }
         public IActionResult Login()
         {
@@ -74,6 +112,11 @@ namespace Fiorello.Controllers
             if(result.IsLockedOut)
             {
                 ModelState.AddModelError("", "Blocked!");
+                return View(loginVM);
+            }
+            if (!user.EmailConfirmed)
+            {
+                ModelState.AddModelError("", "Emaili verify et...!");
                 return View(loginVM);
             }
             if (!result.Succeeded)

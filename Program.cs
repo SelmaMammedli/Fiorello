@@ -23,7 +23,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(identityOption =>
 
     identityOption.User.RequireUniqueEmail = true;
 
-  //identityOption.SignIn.RequireConfirmedEmail = true;
+    identityOption.SignIn.RequireConfirmedEmail = true;
     identityOption.Lockout.MaxFailedAccessAttempts = 3;
     identityOption.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
     identityOption.Lockout.AllowedForNewUsers = true;
