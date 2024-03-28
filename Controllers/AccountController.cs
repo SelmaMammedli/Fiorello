@@ -201,5 +201,15 @@ namespace Fiorello.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string email,string token,ResetPasswordVM resetPasswordVM)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(email);
+            if (!ModelState.IsValid)
+                return View();
+            await _userManager.ResetPasswordAsync(user, token, resetPasswordVM.Password);
+            //await _userManager.UpdateSecurityStampAsync(user);
+            return Json(new {message="password ok"});
+        }
     }
 }
