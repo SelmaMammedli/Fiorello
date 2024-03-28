@@ -161,5 +161,45 @@ namespace Fiorello.Controllers
 
             return Content("Roles added");
         }
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            AppUser user=await _userManager.FindByEmailAsync(email);
+            if(user is null)
+            {
+                ModelState.AddModelError("Email","Email movcud deyil");
+                return View();
+            }
+
+            //send email part
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var link = Url.Action(nameof(ResetPassword), "Account", new { token, email = user.Email },
+                Request.Scheme, Request.Host.ToString());
+
+            MailMessage mailMessage = new();
+            mailMessage.From = new MailAddress("7fvqmgj@code.edu.az", "Email for reset password");
+            mailMessage.To.Add(new MailAddress(user.Email));
+            mailMessage.Subject = "Reset Password";
+            mailMessage.Body = $"<a href={link}>Please click here to reset password</a>";
+            mailMessage.IsBodyHtml = true;
+           
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Host = "smtp.gmail.com";
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
+
+            smtpClient.Credentials = new NetworkCredential("7fvqmgj@code.edu.az", "nahq rjvx xbbc jaqo");
+            smtpClient.Send(mailMessage);
+
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
     }
 }
