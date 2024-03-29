@@ -197,8 +197,10 @@ namespace Fiorello.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        public IActionResult ResetPassword()
+        public async Task<IActionResult> ResetPassword(string email,string token)
         {
+            var user=await _userManager.FindByEmailAsync(email);
+            bool result=await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetToken", token);
             return View();
         }
         [HttpPost]
@@ -208,7 +210,7 @@ namespace Fiorello.Controllers
             if (!ModelState.IsValid)
                 return View();
             await _userManager.ResetPasswordAsync(user, token, resetPasswordVM.Password);
-            //await _userManager.UpdateSecurityStampAsync(user);
+            await _userManager.UpdateSecurityStampAsync(user);
             return Json(new {message="password ok"});
         }
     }
