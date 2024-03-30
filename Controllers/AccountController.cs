@@ -200,7 +200,11 @@ namespace Fiorello.Controllers
         public async Task<IActionResult> ResetPassword(string email,string token)
         {
             var user=await _userManager.FindByEmailAsync(email);
-            bool result=await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetToken", token);
+            bool result=await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", token);
+            if (!result)
+            {
+                return Content("token expired");
+            }
             return View();
         }
         [HttpPost]
