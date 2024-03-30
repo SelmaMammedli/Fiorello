@@ -12,6 +12,7 @@ var config = builder.Configuration;
 builder.Services.Register(config);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IBasketService,BasketService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSignalR();
 builder.Services.AddIdentity<AppUser, IdentityRole>(identityOption =>
 {

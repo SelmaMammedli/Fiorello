@@ -1,5 +1,6 @@
 ﻿using Fiorello.Enums;
 using Fiorello.Models;
+using Fiorello.Services.Interfaces;
 using Fiorello.ViewModels.UserVM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace Fiorello.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager)
+        private readonly IEmailService _emailService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         public IActionResult Register()
@@ -55,29 +58,16 @@ namespace Fiorello.Controllers
             var token=await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var link = Url.Action(nameof(VerifyEmail), "Account", new { token, email = user.Email },
                 Request.Scheme, Request.Host.ToString());
-
-            MailMessage mailMessage = new();
-            mailMessage.From=new MailAddress("7fvqmgj@code.edu.az","Verify Fiorello email");
-            mailMessage.To.Add(new MailAddress(user.Email));
-            mailMessage.Subject = "Verify Email";
-            mailMessage.IsBodyHtml = true;
             string body = String.Empty;
-            using(StreamReader streamReader=new StreamReader("wwwroot/emailTemplate/verifyEmailTemplate.html"))
+            using (StreamReader streamReader = new StreamReader("wwwroot/emailTemplate/verifyEmailTemplate.html"))
             {
-                body= streamReader.ReadToEnd();
+                body = streamReader.ReadToEnd();
             }
-            body=body.Replace("{{name}}", user.FullName);
-            body=body.Replace("{{link}}", link);
-            mailMessage.Body = body;
+            body = body.Replace("{{name}}", user.FullName);
+            body = body.Replace("{{link}}", link);
+            _emailService.SendEmail(user.Email, link, "Verify Fiorello email", "Verify email",body);
+
            
-
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Host = "smtp.gmail.com";
-            smtpClient.Port = 587;
-            smtpClient.EnableSsl = true;
-
-            smtpClient.Credentials = new NetworkCredential("7fvqmgj@code.edu.az", "vunl xkhb nqee iwtz");
-            smtpClient.Send(mailMessage);
 
             return RedirectToAction("Index","Home");
 
@@ -179,21 +169,8 @@ namespace Fiorello.Controllers
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var link = Url.Action(nameof(ResetPassword), "Account", new { token, email = user.Email },
                 Request.Scheme, Request.Host.ToString());
-
-            MailMessage mailMessage = new();
-            mailMessage.From = new MailAddress("7fvqmgj@code.edu.az", "Email for reset password");
-            mailMessage.To.Add(new MailAddress(user.Email));
-            mailMessage.Subject = "Reset Password";
-            mailMessage.Body = $"<a href={link}>Please click here to reset password</a>";
-            mailMessage.IsBodyHtml = true;
-           
-            SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Host = "smtp.gmail.com";
-            smtpClient.Port = 587;
-            smtpClient.EnableSsl = true;
-
-            smtpClient.Credentials = new NetworkCredential("7fvqmgj@code.edu.az", "nahq rjvx xbbc jaqo");
-            smtpClient.Send(mailMessage);
+            string body = $"<a href={link}>Please click here to reset password</a>";
+            _emailService.SendEmail(user.Email, link,"Forget Password for Fiorello","Reset Password",body);
 
             return RedirectToAction("Index", "Home");
         }
