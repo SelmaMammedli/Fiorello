@@ -37,6 +37,7 @@ namespace Fiorello.Hubs
                 Clients.All.SendAsync("userdisconnect", user.Id);
             }
             return base.OnDisconnectedAsync(exception);
+            //signalr continue
         }
 
     }
