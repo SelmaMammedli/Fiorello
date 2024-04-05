@@ -52,10 +52,17 @@
         //    let messageValue = document.getElementById("messageInput").value;
         //    connection.invoke("SendMessage",userValue,messageValue)
         //}
-        connection.on("ReceiveMessage",function(user,message,time){
-           // console.log(user,message,time);
-           let li=document.createElement("li");
-           li.innerText=user+" "+message+" "+time;
+        //connection.on("ReceiveMessage",function(user,message,time){
+        //   // console.log(user,message,time);
+        //   let li=document.createElement("li");
+        //   li.innerText=user+" "+message+" "+time;
+        //    document.getElementById("messagesList").append(li);
+        //})
+        connection.on("PrivateMessage", function (user, message, time) {
+            // console.log(user,message,time);
+            let li = document.createElement("li");
+
+            li.innerText = user + " " + message + " " + time;
             document.getElementById("messagesList").append(li);
         })
         connection.on("userdisconnect",function(id){
@@ -85,7 +92,7 @@
             connection.invoke("SendMessage", userValue, messageValue)
         }
         connection.on("PrivateMessage",function(user,message){
-            alert(message)
+            alert(message);
         })
 
 

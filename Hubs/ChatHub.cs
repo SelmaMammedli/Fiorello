@@ -16,7 +16,7 @@ namespace Fiorello.Hubs
         {
             // await Clients.All.SendAsync("ReceiveMessage", user, message,DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
             var messageUser = await _userManager.FindByNameAsync(user);
-            await Clients.Client(messageUser.ConnectionId).SendAsync("PrivateMessage", user, message/*, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")*/);
+            await Clients.Client(messageUser.ConnectionId).SendAsync("PrivateMessage", user, message, DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
         }
         public override Task OnConnectedAsync()
         {
