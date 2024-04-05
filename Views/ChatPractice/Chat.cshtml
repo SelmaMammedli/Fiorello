@@ -32,7 +32,7 @@
               {
                     <li  class="list-group-item">
                         <span id="@user.Id" class="@(user.ConnectionId!=null?"bg-online":"bg-offline")" style="display:inline-block;width:15px;height:15px;border-radius:50%;"></span>
-                        @user.UserName<a asp-controller="home" asp-action="ShowAlert" asp-route-userId="@user.Id">send message</a></li>
+                        <i class="userName">@user.UserName</i><a asp-controller="home" asp-action="ShowAlert" asp-route-userId="@user.Id">send message</a></li>
               }
             </ul>
             
@@ -47,11 +47,11 @@
     <script>
         var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
         connection.start();
-        document.getElementById("sendButton").onclick=function(){
-            let userValue = document.getElementById("userInput").value;
-            let messageValue = document.getElementById("messageInput").value;
-            connection.invoke("SendMessage",userValue,messageValue)
-        }
+        //document.getElementById("sendButton").onclick=function(){
+        //    let userValue = document.getElementById("userInput").value;
+        //    let messageValue = document.getElementById("messageInput").value;
+        //    connection.invoke("SendMessage",userValue,messageValue)
+        //}
         connection.on("ReceiveMessage",function(user,message,time){
            // console.log(user,message,time);
            let li=document.createElement("li");
@@ -71,11 +71,21 @@
         connection.on("UserShowAlert",function(name){
             alert(name+"says salam")
         })
-        let listLi=document.querySelectorAll(".list-group-item");
-        listLi.forEach(li=>{
-            li.onclick=function(){
-                alert("slm");
+        let listI=document.querySelectorAll(".userName");
+        listI.forEach(i=>{
+             i.onclick=function(){
+                let userName=i.innerText;
+                let userInput=document.getElementById("userInput");
+                userInput.value=userName;
             }
+        })
+        document.getElementById("sendButton").onclick = function () {
+            let userValue = document.getElementById("userInput").value.trim();
+            let messageValue = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", userValue, messageValue)
+        }
+        connection.on("PrivateMessage",function(user,message){
+            alert(message)
         })
 
 
