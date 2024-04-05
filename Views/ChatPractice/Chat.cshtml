@@ -72,6 +72,11 @@
             alert(name+"says salam")
         })
         let listLi=document.querySelectorAll(".list-group-item");
+        listLi.forEach(li=>{
+            li.onclick=function(){
+                alert("slm");
+            }
+        })
 
 
     </script>
