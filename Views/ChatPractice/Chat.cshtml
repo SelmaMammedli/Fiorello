@@ -41,6 +41,10 @@
         </div>
 
     </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <input id="currentUser" type="hidden" value="@User.Identity.Name" />
+    }
 </div>
 @section Scripts{
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
@@ -90,12 +94,20 @@
         document.getElementById("sendButton").onclick = function () {
             let userValue = document.getElementById("userInput").value.trim();
             let messageValue = document.getElementById("messageInput").value;
-            connection.invoke("SendMessage", userValue.split(' '), messageValue)
+            connection.invoke("SendMessage", userValue.split(' '), messageValue);
             userMassive = [];
             document.getElementById("userInput").value='';
         }
         connection.on("PrivateMessage",function(message){
             alert(message);
+        })
+        document.getElementById("messageInput").onkeyup=function(){
+            let userValue = document.getElementById("userInput").value.trim();
+            let currentUserInputValue=document.getElementById("currentUser").value;
+            connection.invoke("TypingMessage", userValue.split(' '), currentUserInputValue);
+        }
+        connection.on("Typing", function (currentValue) {
+            console.log(currentValue+" "+ "typing...");
         })
 
 
