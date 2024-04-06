@@ -77,20 +77,24 @@
         connection.on("UserShowAlert",function(name){
             alert(name+"says salam")
         })
+        let userMassive=[];
         let listI=document.querySelectorAll(".userName");
         listI.forEach(i=>{
              i.onclick=function(){
                 let userName=i.innerText;
+                userMassive.push(userName);
                 let userInput=document.getElementById("userInput");
-                userInput.value=userName;
+                userInput.value=userMassive.join(' ');
             }
         })
         document.getElementById("sendButton").onclick = function () {
             let userValue = document.getElementById("userInput").value.trim();
             let messageValue = document.getElementById("messageInput").value;
-            connection.invoke("SendMessage", userValue, messageValue)
+            connection.invoke("SendMessage", userValue.split(' '), messageValue)
+            userMassive = [];
+            document.getElementById("userInput").value='';
         }
-        connection.on("PrivateMessage",function(user,message){
+        connection.on("PrivateMessage",function(message){
             alert(message);
         })
 
