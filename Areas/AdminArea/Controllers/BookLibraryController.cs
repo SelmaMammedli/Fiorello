@@ -14,6 +14,7 @@ namespace Fiorello.Areas.AdminArea.Controllers
         }
         public IActionResult Index()
         {
+            
             return View();
         }
     }

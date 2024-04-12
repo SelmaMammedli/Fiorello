@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\AdminArea\Models\" />
+    <Folder Include="Areas\ViewModels\BookLibrary\" />
   </ItemGroup>
 
 </Project>
