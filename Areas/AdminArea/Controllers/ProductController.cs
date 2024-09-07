@@ -17,14 +17,22 @@ namespace Fiorello.Areas.AdminArea.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page=1,int take=3)
         {
             var datas=_context.Products
                 .Include(c=>c.Category)
                 .Include(c=>c.ProductImages)
                 .AsNoTracking()
+                .Skip((page-1)*take)
+                .Take(take)
                 .ToList();
-            return View(datas);
+            var allProductsCount=_context.Products.Count();
+            int totalPage =(int)Math.Ceiling((decimal) (allProductsCount) / take);
+            PaginationHelper<Product> paginationVM = new();
+            paginationVM.Items= datas;
+            paginationVM.CurrentPage= page;
+            paginationVM.TotalPage =totalPage;
+            return View(paginationVM);
         }
         public IActionResult Create()
         {
