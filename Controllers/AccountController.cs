@@ -49,9 +49,9 @@ namespace Fiorello.Controllers
                 return View(registerVM);
 
             }
-            await _userManager.AddToRoleAsync(user,Roles.Member.ToString());
-            //await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
-            //await _userManager.AddToRoleAsync(user, Roles.SuperAdmin.ToString());
+            //await _userManager.AddToRoleAsync(user,Roles.Member.ToString());
+            await _userManager.AddToRoleAsync(user, Roles.Admin.ToString());
+           // await _userManager.AddToRoleAsync(user, Roles.SuperAdmin.ToString());
 
 
             //email confirmation
