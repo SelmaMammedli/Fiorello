@@ -19,19 +19,20 @@ namespace Fiorello.Areas.AdminArea.Controllers
         }
         public IActionResult Index(int page=1,int take=3)
         {
-            var datas=_context.Products
-                .Include(c=>c.Category)
-                .Include(c=>c.ProductImages)
-                .AsNoTracking()
-                .Skip((page-1)*take)
-                .Take(take)
-                .ToList();
-            var allProductsCount=_context.Products.Count();
-            int totalPage =(int)Math.Ceiling((decimal) (allProductsCount) / take);
+            var query = _context.Products.AsQueryable();
+              
+            var allProductsCount=query.Count();
+            
             PaginationHelper<Product> paginationVM = new();
-            paginationVM.Items= datas;
+            paginationVM.Items= query
+                .Include(c => c.Category)
+                .Include(c => c.ProductImages)
+                .AsNoTracking()
+                .Skip((page - 1) * take)
+                .Take(take)
+                .ToList(); ;
             paginationVM.CurrentPage= page;
-            paginationVM.TotalPage =totalPage;
+            paginationVM.TotalPage =paginationVM.CalculateCount(allProductsCount,take);
             return View(paginationVM);
         }
         public IActionResult Create()

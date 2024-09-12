@@ -18,5 +18,7 @@
         public IEnumerable<T> Items { get; set; }
         public bool HasNext => CurrentPage < TotalPage;
         public bool HasPrevious => CurrentPage > 1;
+        public int CalculateCount(int count,int take)=>(int)Math.Ceiling((decimal)(count) / take);
+        
     }
 }
